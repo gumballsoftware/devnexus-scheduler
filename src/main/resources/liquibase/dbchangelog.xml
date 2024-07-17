@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1715211723547-1" author="ktm (generated)">
+        <createSequence incrementBy="50" sequenceName="conference_schedule_seq" startValue="1"/>
+    </changeSet>
+    <changeSet id="1715211723547-2" author="ktm (generated)">
+        <createSequence incrementBy="50" sequenceName="timeslot_room_seq" startValue="1"/>
+    </changeSet>
+    <changeSet id="1715211723547-3" author="ktm (generated)">
+        <createSequence incrementBy="50" sequenceName="timeslot_room_session_seq" startValue="1"/>
+    </changeSet>
+    <changeSet id="1715211723547-4" author="ktm (generated)">
+        <createTable tableName="conference_day">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_conference_day"/>
+            </column>
+            <column name="date" type="DATETIME"/>
+            <column name="is_default" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="conference_schedule_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1715211723547-5" author="ktm (generated)">
+        <createTable tableName="conference_schedule">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_conferenceschedule"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1715211723547-6" author="ktm (generated)">
+        <createTable tableName="conference_schedule_conference_day_list">
+            <column name="conference_schedule_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="conference_day_list_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1715211723547-7" author="ktm (generated)">
+        <createTable tableName="room">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_room"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1715211723547-8" author="ktm (generated)">
+        <createTable tableName="session">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_session"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="starts" type="DATETIME"/>
+            <column name="ends" type="DATETIME"/>
+            <column name="current_room_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1715211723547-9" author="ktm (generated)">
+        <createTable tableName="timeslot">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_timeslot"/>
+            </column>
+            <column name="start_time" type="TIME"/>
+            <column name="conference_day_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1715211723547-10" author="ktm (generated)">
+        <createTable tableName="timeslot_room">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_timeslotroom"/>
+            </column>
+            <column name="timeslot_id" type="VARCHAR(255)"/>
+            <column name="room_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1715211723547-11" author="ktm (generated)">
+        <createTable tableName="timeslot_room_session">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_timeslotroomsession"/>
+            </column>
+            <column name="room_id" type="BIGINT"/>
+            <column name="session_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1715211723547-12" author="ktm (generated)">
+        <addUniqueConstraint columnNames="conference_day_list_id"
+                             constraintName="uc_conference_schedule_conference_day_list_conferencedaylist"
+                             tableName="conference_schedule_conference_day_list"/>
+    </changeSet>
+    <changeSet id="1715211723547-13" author="ktm (generated)">
+        <addUniqueConstraint columnNames="current_room_id" constraintName="uc_session_current_room"
+                             tableName="session"/>
+    </changeSet>
+    <changeSet id="1715211723547-14" author="ktm (generated)">
+        <addForeignKeyConstraint baseColumnNames="conference_schedule_id" baseTableName="conference_day"
+                                 constraintName="FK_CONFERENCE_DAY_ON_CONFERENCESCHEDULE" referencedColumnNames="id"
+                                 referencedTableName="conference_schedule"/>
+    </changeSet>
+    <changeSet id="1715211723547-15" author="ktm (generated)">
+        <addForeignKeyConstraint baseColumnNames="current_room_id" baseTableName="session"
+                                 constraintName="FK_SESSION_ON_CURRENT_ROOM" referencedColumnNames="id"
+                                 referencedTableName="room"/>
+    </changeSet>
+    <changeSet id="1715211723547-16" author="ktm (generated)">
+        <addForeignKeyConstraint baseColumnNames="room_id" baseTableName="timeslot_room_session"
+                                 constraintName="FK_TIMESLOTROOMSESSION_ON_ROOM" referencedColumnNames="id"
+                                 referencedTableName="timeslot_room"/>
+    </changeSet>
+    <changeSet id="1715211723547-17" author="ktm (generated)">
+        <addForeignKeyConstraint baseColumnNames="session_id" baseTableName="timeslot_room_session"
+                                 constraintName="FK_TIMESLOTROOMSESSION_ON_SESSION" referencedColumnNames="id"
+                                 referencedTableName="session"/>
+    </changeSet>
+    <changeSet id="1715211723547-18" author="ktm (generated)">
+        <addForeignKeyConstraint baseColumnNames="room_id" baseTableName="timeslot_room"
+                                 constraintName="FK_TIMESLOTROOM_ON_ROOM" referencedColumnNames="id"
+                                 referencedTableName="room"/>
+    </changeSet>
+    <changeSet id="1715211723547-19" author="ktm (generated)">
+        <addForeignKeyConstraint baseColumnNames="timeslot_id" baseTableName="timeslot_room"
+                                 constraintName="FK_TIMESLOTROOM_ON_TIMESLOT" referencedColumnNames="id"
+                                 referencedTableName="timeslot"/>
+    </changeSet>
+    <changeSet id="1715211723547-20" author="ktm (generated)">
+        <addForeignKeyConstraint baseColumnNames="conference_day_id" baseTableName="timeslot"
+                                 constraintName="FK_TIMESLOT_ON_CONFERENCEDAY" referencedColumnNames="id"
+                                 referencedTableName="conference_day"/>
+    </changeSet>
+    <changeSet id="1715211723547-21" author="ktm (generated)">
+        <addForeignKeyConstraint baseColumnNames="conference_day_list_id"
+                                 baseTableName="conference_schedule_conference_day_list"
+                                 constraintName="fk_conschcondaylis_on_conference_day" referencedColumnNames="id"
+                                 referencedTableName="conference_day"/>
+    </changeSet>
+    <changeSet id="1715211723547-22" author="ktm (generated)">
+        <addForeignKeyConstraint baseColumnNames="conference_schedule_id"
+                                 baseTableName="conference_schedule_conference_day_list"
+                                 constraintName="fk_conschcondaylis_on_conference_schedule" referencedColumnNames="id"
+                                 referencedTableName="conference_schedule"/>
+    </changeSet>
+
+</databaseChangeLog>

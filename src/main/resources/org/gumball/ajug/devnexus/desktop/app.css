@@ -1,0 +1,9 @@
+#pane{
+    -fx-background-image: url("spider.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.splashButton{
+    -fx-background-color: #a3d69e;
+}
