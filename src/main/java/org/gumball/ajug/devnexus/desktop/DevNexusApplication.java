@@ -31,7 +31,7 @@ public class DevNexusApplication extends Application {
 
     @Override
     public void init() {
-        springContext = new SpringApplicationBuilder(SpringBooter.class).run();
+        springContext = new SpringApplicationBuilder(SpringBootFXLauncher.class).run();
         eventBus = (EventBus) springContext.getBean("eventBus");
         eventBus.addListener(EventTypes.LOAD_VIEW, new WeakEventHandler(viewLoadHandler));
     }
@@ -47,7 +47,7 @@ public class DevNexusApplication extends Application {
         Parent root = loadFXML("main-view");
         VIEW_MAP.put("dashboard", root);
 
-        Scene scene = new Scene(root, 1024, 768);
+        Scene scene = new Scene(root, 1500, 768);
         scene.getStylesheets().add(getClass().getResource("app.css").toExternalForm());
         stage.setScene(scene);
         scene.setFill(Color.TRANSPARENT);
@@ -71,7 +71,7 @@ public class DevNexusApplication extends Application {
         fxmlLoader.setControllerFactory(springContext::getBean);
         Parent p = fxmlLoader.load();
         Controller controller = fxmlLoader.getController();
-        controller.initialize();
+//        controller.initialize();
         return p;
     }
 
